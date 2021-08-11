@@ -1,7 +1,12 @@
-type prStatus = "draft" | "open" | "closed";
+type prStatus = "draft" | "open" | "closed" | "all";
 
 export const statusCheck = (status: prStatus) => {
-  if (status !== "draft" && status !== "open" && status !== "closed") {
+  if (
+    status !== "draft" &&
+    status !== "open" &&
+    status !== "closed" &&
+    status !== "all"
+  ) {
     return Promise.reject();
   }
   return Promise.resolve();
@@ -9,7 +14,8 @@ export const statusCheck = (status: prStatus) => {
 
 export const labelsCheck = (labelsParams: string) => {
   const labelsArray = labelsParams?.substring(2)?.split(",");
-  if (!labelsArray || labelsArray[0] === "") {
+  console.log(labelsArray);
+  if (!labelsArray) {
     return Promise.reject("Labels array is empty");
   }
   return Promise.resolve();
@@ -32,8 +38,8 @@ export const fullNameCheck = (fullName: string) => {
   }
 };
 
-export const trueFalseCheck = (query: "true" | "false") => {
-  if (query !== "true" && query !== "false") {
+export const sortingMethodCheck = (query: "title" | "number") => {
+  if (query !== "title" && query !== "number") {
     return Promise.reject();
   }
   return Promise.resolve();

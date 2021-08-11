@@ -4,7 +4,7 @@ import {
   statusCheck,
   labelsCheck,
   orderCheck,
-  trueFalseCheck,
+  sortingMethodCheck,
 } from "./custom-checks";
 
 export const createPullReqValidator = [
@@ -37,10 +37,7 @@ export const getPullReqValidator = [
   query("sortingOrder", "Sorting by order is not defined").custom((order) =>
     orderCheck(order)
   ),
-  query("sortingByNumber", "Sorting by number is not defined").custom(
-    (byNumber) => trueFalseCheck(byNumber)
-  ),
-  query("sortingByTitle", "Sorting by title is not defined").custom((byTitle) =>
-    trueFalseCheck(byTitle)
+  query("sortingMethod", "Sorting by method is not defined").custom(
+    (byNumber) => sortingMethodCheck(byNumber)
   ),
 ];
