@@ -29,8 +29,8 @@ mongoose
   .catch((err) => console.log(err));
 
 app.use((error: any, {}, res: express.Response, {}) => {
-  const { statusCode, message } = error;
+  const { statusCode, message, errors } = error;
   return res
     .status(statusCode || 500)
-    .send({ message: message || "Internal server error" });
+    .send({ message: message || "Internal server error", errors: errors });
 });
