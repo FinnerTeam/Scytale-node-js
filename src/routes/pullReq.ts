@@ -1,9 +1,12 @@
 import { Router } from "express";
-import { createPullRequest } from "../controllers/pullReq";
-import { createPullReqValidator } from "../validators/pullReq";
+import { createPullRequest, getPullRequests } from "../controllers/pullReq";
+import {
+  createPullReqValidator,
+  getPullReqValidator,
+} from "../validators/pullReq";
 const router = Router();
 
-// router.get("/", getPullRequests);
+router.get("/", getPullReqValidator, getPullRequests);
 
 router.post("/", createPullReqValidator, createPullRequest);
 

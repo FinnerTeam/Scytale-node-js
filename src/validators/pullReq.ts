@@ -1,4 +1,11 @@
-import { check } from "express-validator";
+import { check, query } from "express-validator";
+import {
+  fullNameCheck,
+  statusCheck,
+  labelsCheck,
+  orderCheck,
+  trueFalseCheck,
+} from "./custom-checks";
 
 export const createPullReqValidator = [
   check("title", "Please enter a valid title")
@@ -9,33 +16,31 @@ export const createPullReqValidator = [
     .trim()
     .isString()
     .isLength({ min: 2, max: 500 }),
-  check("author", "Please enter a valid full name")
+  check("author", "First and last name must have at least 2 characters long")
     .trim()
     .isString()
     .isLength({ min: 5, max: 100 })
-    .custom((fullName) => {
-      const fullNameArray = fullName.split(" ");
-      console.log(fullNameArray);
-      const firstName = fullNameArray[0];
-      const LastName = fullNameArray[1];
-      console.log(firstName, LastName);
-      if (
-        !firstName ||
-        firstName.length <= 2 ||
-        !LastName ||
-        LastName?.length <= 2
-      ) {
-        return Promise.reject();
-      }
-      return Promise.resolve();
-    }),
+    .custom((fullName) => fullNameCheck(fullName)),
   check("status", "Please choose a valid status")
     .trim()
-    .custom((status) => {
-      if (status !== "draft" && status !== "open" && status !== "closed") {
-        return Promise.reject();
-      }
-      return Promise.resolve();
-    }),
+    .custom((status) => statusCheck(status)),
   check("labels", "Please enter valid labels").isArray(),
+];
+
+export const getPullReqValidator = [
+  query("prStatus", "Please enter a valid status")
+    .trim()
+    .custom((status) => statusCheck(status)),
+  query("labels", "Please enter valid labels").custom((labels) =>
+    labelsCheck(labels)
+  ),
+  query("sortingOrder", "Sorting by order is not defined").custom((order) =>
+    orderCheck(order)
+  ),
+  query("sortingByNumber", "Sorting by number is not defined").custom(
+    (byNumber) => trueFalseCheck(byNumber)
+  ),
+  query("sortingByTitle", "Sorting by title is not defined").custom((byTitle) =>
+    trueFalseCheck(byTitle)
+  ),
 ];
