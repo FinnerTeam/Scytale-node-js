@@ -5,8 +5,13 @@
       "target": "es6",
       "moduleResolution": "node",
       "sourceMap": true,
-      "outDir": "ts-built"
+      "outDir": "ts-built",
+      "lib": [      
+        "es2021",
+        "dom"
+      ],
     },
+  
     "exclude": [
       "./tests/",
       "./node_modules/",

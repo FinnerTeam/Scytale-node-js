@@ -14,7 +14,7 @@ app.use(cors());
 
 app.use(helmet());
 
-app.use("/pullRequest", pullReqRoutes);
+app.use("/prs", pullReqRoutes);
 
 mongoose
   .connect(MONGODB_URI, {

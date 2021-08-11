@@ -30,6 +30,7 @@ export const createPullReqValidator = [
 export const getPullReqValidator = [
   query("prStatus", "Please enter a valid status")
     .trim()
+    .toLowerCase()
     .custom((status) => statusCheck(status)),
   query("labels", "Please enter valid labels").custom((labels) =>
     labelsCheck(labels)
@@ -37,7 +38,7 @@ export const getPullReqValidator = [
   query("sortingOrder", "Sorting by order is not defined").custom((order) =>
     orderCheck(order)
   ),
-  query("sortingMethod", "Sorting by method is not defined").custom(
-    (byNumber) => sortingMethodCheck(byNumber)
-  ),
+  query("sortingMethod", "Sorting by method is not defined")
+    .toLowerCase()
+    .custom((byNumber) => sortingMethodCheck(byNumber)),
 ];

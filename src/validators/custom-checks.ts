@@ -37,15 +37,15 @@ export const fullNameCheck = (fullName: string) => {
   }
 };
 
-export const sortingMethodCheck = (query: "title" | "_id") => {
-  if (query !== "title" && query !== "_id") {
+export const sortingMethodCheck = (query: "title" | "creation") => {
+  if (query !== "title" && query !== "creation") {
     return Promise.reject();
   }
   return Promise.resolve();
 };
 
-export const orderCheck = (order: "asc" | "desc") => {
-  if (order !== "asc" && order !== "desc") {
+export const orderCheck = (order: "1" | "-1") => {
+  if (order !== "1" && order !== "-1") {
     return Promise.reject();
   }
   return Promise.resolve();

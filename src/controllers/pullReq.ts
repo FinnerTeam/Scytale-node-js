@@ -1,6 +1,7 @@
 import { validationResult } from "express-validator";
 import { errorHandler } from "../helpers/errorHandler";
 import PullRequest from "../models/pullReq";
+// import { getTime } from "../helpers/time";
 type prStatus = "draft" | "open" | "closed" | "all";
 interface createReqBody {
   title: string;
@@ -13,7 +14,7 @@ interface getReqQueryParams {
   prStatus: prStatus;
   labels: string;
   sortingOrder: "asc" | "desc";
-  sortingMethod: "title" | "number";
+  sortingMethod: "title" | "creation";
 }
 
 export const createPullRequest = async (req, res, next) => {
@@ -57,15 +58,23 @@ export const getPullRequests = async (req, res, next) => {
     if (prStatus && prStatus !== "all") {
       findFields["status"] = prStatus;
     }
-    if (sortingMethod) {
-      sortFields[sortingMethod] = sortingOrder;
+    sortFields[sortingMethod] = sortingOrder;
+    if (sortingMethod === "creation") {
+      sortFields["_id"] = sortingOrder;
     }
     const pullRequests = await PullRequest.find(findFields)
       .sort(sortFields)
       .limit(20);
     ///until here
-    res.status(200).send({ array: pullRequests });
+    // pullRequests.forEach((request) => {
+    //   if (request.createdAt instanceof Date) {
+    //     request.createdAt = getTime(request.createdAt);
+    //     console.log(request.createdAt);
+    //   }
+    // });
+    res.status(200).send(pullRequests);
   } catch (err) {
+    console.log(err);
     next(err);
   }
 };
