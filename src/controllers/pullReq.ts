@@ -48,6 +48,7 @@ export const getPullRequests = async (req, res, next) => {
       throw errorHandler("Validation failed", 422, errors.array());
     }
     const labelsArray = labels.substring(2).split(",");
+    ///Transfer to method inside model later
     const findFields = {};
     const sortFields = {};
     if (labelsArray[0].length > 0) {
@@ -62,8 +63,7 @@ export const getPullRequests = async (req, res, next) => {
     const pullRequests = await PullRequest.find(findFields)
       .sort(sortFields)
       .limit(20);
-    const number = await PullRequest.find(findFields).count();
-    console.log(number);
+    ///until here
     res.status(200).send({ array: pullRequests });
   } catch (err) {
     next(err);

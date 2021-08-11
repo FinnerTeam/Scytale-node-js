@@ -14,7 +14,6 @@ export const statusCheck = (status: prStatus) => {
 
 export const labelsCheck = (labelsParams: string) => {
   const labelsArray = labelsParams?.substring(2)?.split(",");
-  console.log(labelsArray);
   if (!labelsArray) {
     return Promise.reject("Labels array is empty");
   }
@@ -38,8 +37,8 @@ export const fullNameCheck = (fullName: string) => {
   }
 };
 
-export const sortingMethodCheck = (query: "title" | "number") => {
-  if (query !== "title" && query !== "number") {
+export const sortingMethodCheck = (query: "title" | "_id") => {
+  if (query !== "title" && query !== "_id") {
     return Promise.reject();
   }
   return Promise.resolve();
