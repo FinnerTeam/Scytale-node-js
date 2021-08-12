@@ -1,52 +1,23 @@
-import mongoose from "mongoose";
-export interface PullRequestInput {
-  title: string;
-  description: string;
-  author: string;
-  status: string;
-  labels: string[];
-  createdAt?: Date;
-  time?: string;
-}
-export interface PullRequestDocument
-  extends PullRequestInput,
-    mongoose.Document {
-  fetchAll: (...args: any) => Promise<any[]>;
-}
+import { IPullRequest, prStatus, order } from "../types";
+import mongoose, { Schema } from "mongoose";
 
-const PullRequestSchema = new mongoose.Schema(
+const PullRequestSchema: Schema = new Schema(
   {
-    title: {
-      type: String,
-      required: true,
-    },
-    description: {
-      type: String,
-      required: true,
-    },
-    author: {
-      type: String,
-      required: true,
-    },
-    status: {
-      type: String,
-      required: true,
-    },
-    labels: {
-      type: Array,
-      required: true,
-    },
+    title: { type: String, required: true },
+    description: { type: String, required: true },
+    author: { type: String, required: true },
+    status: { type: String, required: true },
+    labels: { type: Array, required: true },
   },
   { timestamps: true }
 );
 
-PullRequestSchema.methods.getAll = async function (
-  prStatus,
-  labelsArray,
-  sortingOrder,
-  sortingMethod
-): Promise<any[]> {
-  const pr = this as PullRequestDocument;
+export const getAll = async (
+  prStatus: prStatus,
+  labelsArray: string[],
+  sortingOrder: order,
+  sortingMethod: "title" | "creation"
+): Promise<any[]> => {
   const findFields = {};
   const sortFields = {};
   if (labelsArray[0].length > 0) {
@@ -58,10 +29,10 @@ PullRequestSchema.methods.getAll = async function (
   if (sortingMethod) {
     sortFields[sortingMethod] = sortingOrder;
   }
-  // @ts-ignore: Unreachable code error
-  return await this.find(findFields).sort(sortFields).limit(20);
+  return await PullReq.find(findFields).sort(sortFields).limit(20);
 };
-export default mongoose.model<PullRequestDocument>(
+
+export const PullReq = mongoose.model<IPullRequest>(
   "PullRequest",
   PullRequestSchema
 );

@@ -1,6 +1,6 @@
 import { validationResult } from "express-validator";
 import { errorHandler } from "../helpers/errorHandler";
-import PullRequest from "../models/pullReq";
+import { PullReq, getAll } from "../models/pullReq";
 import { createReqBody, getReqQueryParams } from "../types";
 export const createPullRequest = async (req, res, next) => {
   const { title, description, author, status, labels } =
@@ -10,7 +10,7 @@ export const createPullRequest = async (req, res, next) => {
     if (!errors.isEmpty()) {
       throw errorHandler("Validation failed", 422, errors.array());
     }
-    const pr = await PullRequest.create({
+    const pr = await PullReq.create({
       title,
       description,
       author,
@@ -34,24 +34,13 @@ export const getPullRequests = async (req, res, next) => {
       throw errorHandler("Validation failed", 422, errors.array());
     }
     const labelsArray = labels.substring(2).split(",");
-    ///Transfer to method inside model later
-    const findFields = {};
-    const sortFields = {};
-    if (labelsArray[0].length > 0) {
-      findFields["labels"] = { $in: labelsArray };
-    }
-    if (prStatus && prStatus !== "all") {
-      findFields["status"] = prStatus;
-    }
-    sortFields[sortingMethod] = sortingOrder;
-    if (sortingMethod === "creation") {
-      sortFields["_id"] = sortingOrder;
-    }
-    let pullRequests = await PullRequest.find(findFields)
-      .sort(sortFields)
-      .limit(20);
-    ///until here
-    res.status(200).send(pullRequests);
+    const response = await getAll(
+      prStatus,
+      labelsArray,
+      sortingOrder,
+      sortingMethod
+    );
+    res.status(200).send(response);
   } catch (err) {
     console.log(err);
     next(err);

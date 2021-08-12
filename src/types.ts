@@ -1,6 +1,17 @@
+import { Document } from "mongoose";
+
 export type prStatus = "draft" | "open" | "closed" | "all";
 
-export type order = "asc" | "desc";
+export type order = 1 | -1;
+export interface IPullRequest extends Document {
+  title: string;
+  description: string;
+  author: string;
+  status: string;
+  labels: string[];
+  createdAt?: Date;
+  time?: string;
+}
 export interface sorting {
   order: order;
   prNumber: boolean;
@@ -28,6 +39,6 @@ export interface createReqBody {
 export interface getReqQueryParams {
   prStatus: prStatus;
   labels: string;
-  sortingOrder: "asc" | "desc";
+  sortingOrder: order;
   sortingMethod: "title" | "creation";
 }
