@@ -37,8 +37,8 @@ export const fullNameCheck = (fullName: string) => {
   }
 };
 
-export const sortingMethodCheck = (query: "title" | "creation") => {
-  if (query !== "title" && query !== "creation" && query !== "all") {
+export const sortingMethodCheck = (query: "title" | "_id") => {
+  if (query !== "title" && query !== "_id" && query !== "all") {
     return Promise.reject();
   }
   return Promise.resolve();
