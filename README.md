@@ -10,6 +10,7 @@ Scytale Backend server handles uploading and fetching pull requests.
 ## Instructions:
 
 - "git clone" the repo.
+- connect to your own mongo db database.
 - "npm start" in dir.
 
 ## Side notes:
