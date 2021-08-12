@@ -1,4 +1,5 @@
-import { IPullRequest, prStatus, order } from "../types";
+import { IPullRequest } from "../types/models";
+import { prStatus, order } from "../types/general";
 import mongoose, { Schema } from "mongoose";
 
 const PullRequestSchema: Schema = new Schema(

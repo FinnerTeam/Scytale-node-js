@@ -1,8 +1,15 @@
 import { validationResult } from "express-validator";
 import { errorHandler } from "../helpers/errorHandler";
 import { PullReq, getAll } from "../models/pullReq";
-import { createReqBody, getReqQueryParams } from "../types";
-export const createPullRequest = async (req, res, next) => {
+import {
+  res,
+  req,
+  next,
+  createReqBody,
+  getReqQueryParams,
+} from "../types/express";
+
+export const createPullRequest = async (req: req, res: res, next: next) => {
   const { title, description, author, status, labels } =
     req.body as createReqBody;
   const errors = validationResult(req);
@@ -25,7 +32,7 @@ export const createPullRequest = async (req, res, next) => {
   }
 };
 
-export const getPullRequests = async (req, res, next) => {
+export const getPullRequests = async (req, res: res, next: next) => {
   const { prStatus, labels, sortingOrder, sortingMethod } =
     req.query as getReqQueryParams;
   const errors = validationResult(req);
