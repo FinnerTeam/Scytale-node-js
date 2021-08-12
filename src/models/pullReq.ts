@@ -21,7 +21,6 @@ export const getAll = async (
 ): Promise<any[]> => {
   const findFields = {};
   const sortFields = {};
-  console.log("label", label);
   if (label && label !== "all") {
     findFields["labels"] = label;
   }

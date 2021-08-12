@@ -50,7 +50,6 @@ export const getPullRequests = async (req, res: res, next: next) => {
     const prsArray = await getAll(prStatus, labels, sortingOrder, method);
     res.status(200).send({ prs: prsArray, labels: labelsArray });
   } catch (err) {
-    console.log(err);
     next(err);
   }
 };
