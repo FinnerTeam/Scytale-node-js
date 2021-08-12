@@ -39,7 +39,6 @@ export const getPullRequests = async (req, res: res, next: next) => {
     if (!errors.isEmpty()) {
       throw errorHandler("Validation failed", 422, errors.array());
     }
-    const labelsData = labels.substring(2).split(",");
     let method: "_id" | "title";
     if (sortingMethod == "creation") {
       method = "_id";
@@ -48,7 +47,7 @@ export const getPullRequests = async (req, res: res, next: next) => {
     }
     const labelsResponse = await getLabels();
     const labelsArray = labelsResponse[0].allLabels;
-    const prsArray = await getAll(prStatus, labelsData, sortingOrder, method);
+    const prsArray = await getAll(prStatus, labels, sortingOrder, method);
     res.status(200).send({ prs: prsArray, labels: labelsArray });
   } catch (err) {
     console.log(err);

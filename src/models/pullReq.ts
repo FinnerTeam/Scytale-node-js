@@ -15,14 +15,15 @@ const PullRequestSchema: Schema = new Schema(
 
 export const getAll = async (
   prStatus: prStatus,
-  labelsArray: string[],
+  label: string,
   sortingOrder: order,
   sortingMethod: "title" | "_id"
 ): Promise<any[]> => {
   const findFields = {};
   const sortFields = {};
-  if (labelsArray[0].length > 0) {
-    findFields["labels"] = { $in: labelsArray };
+  console.log("label", label);
+  if (label && label !== "all") {
+    findFields["labels"] = label;
   }
   if (prStatus && prStatus !== "all") {
     findFields["status"] = prStatus;
