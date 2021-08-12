@@ -1,5 +1,5 @@
 import { Response, Request, NextFunction } from "express";
-import { prStatus, order, sortingMethod } from "./general";
+import { prStatus, sortingMethod } from "./general";
 export type res = Response;
 export type req = Request;
 export type next = NextFunction;

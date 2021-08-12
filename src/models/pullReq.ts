@@ -1,5 +1,5 @@
 import { IPullRequest } from "../types/models";
-import { prStatus, order, sortingMethod } from "../types/general";
+import { prStatus, sortingMethod } from "../types/general";
 import { Schema, model } from "mongoose";
 import { PR_PER_PAGE } from "../controllers/pullReq";
 

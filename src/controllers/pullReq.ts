@@ -44,8 +44,8 @@ export const getPullRequests = async (req, res: res, next: next) => {
     }
     const pageNumber = +page || 1;
     const order = parseInt(sortingOrder);
-    const labelsResponse = await getLabels();
-    const labelsArray = labelsResponse[0].allLabels;
+    const labelsCount = await getLabels();
+    const labelsArray = labelsCount[0].allLabels;
     const prs = await getAll(prStatus, labels, order, sortingMethod, page);
     res.status(200).send({
       prs: prs[0]?.data || [],
