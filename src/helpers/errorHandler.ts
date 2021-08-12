@@ -1,11 +1,11 @@
 interface error extends Error {
   statusCode: number;
-  errors: any[];
+  errors: string[];
 }
 export const errorHandler = (
   message = "Internal server error",
   status = 500,
-  errors = [] as any[]
+  errors = [] as string[]
 ) => {
   const error = new Error(message) as error;
   error.statusCode = status;

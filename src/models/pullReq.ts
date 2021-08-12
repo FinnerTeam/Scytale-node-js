@@ -4,8 +4,9 @@ export interface PullRequestInput {
   description: string;
   author: string;
   status: string;
-  labels: any[];
-  createdAt?: Date | string;
+  labels: string[];
+  createdAt?: Date;
+  time?: string;
 }
 export interface PullRequestDocument
   extends PullRequestInput,

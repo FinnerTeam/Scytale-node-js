@@ -1,5 +1,4 @@
-type prStatus = "draft" | "open" | "closed" | "all";
-
+import { prStatus } from "../types";
 export const statusCheck = (status: prStatus) => {
   if (
     status !== "draft" &&

@@ -4,6 +4,7 @@ import {
   createPullReqValidator,
   getPullReqValidator,
 } from "../validators/pullReq";
+
 const router = Router();
 
 router.get("/", getPullReqValidator, getPullRequests);

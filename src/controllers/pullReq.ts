@@ -1,22 +1,7 @@
 import { validationResult } from "express-validator";
 import { errorHandler } from "../helpers/errorHandler";
 import PullRequest from "../models/pullReq";
-// import { getTime } from "../helpers/time";
-type prStatus = "draft" | "open" | "closed" | "all";
-interface createReqBody {
-  title: string;
-  description: string;
-  author: string;
-  status: prStatus;
-  labels: string[];
-}
-interface getReqQueryParams {
-  prStatus: prStatus;
-  labels: string;
-  sortingOrder: "asc" | "desc";
-  sortingMethod: "title" | "creation";
-}
-
+import { createReqBody, getReqQueryParams } from "../types";
 export const createPullRequest = async (req, res, next) => {
   const { title, description, author, status, labels } =
     req.body as createReqBody;
@@ -62,16 +47,10 @@ export const getPullRequests = async (req, res, next) => {
     if (sortingMethod === "creation") {
       sortFields["_id"] = sortingOrder;
     }
-    const pullRequests = await PullRequest.find(findFields)
+    let pullRequests = await PullRequest.find(findFields)
       .sort(sortFields)
       .limit(20);
     ///until here
-    // pullRequests.forEach((request) => {
-    //   if (request.createdAt instanceof Date) {
-    //     request.createdAt = getTime(request.createdAt);
-    //     console.log(request.createdAt);
-    //   }
-    // });
     res.status(200).send(pullRequests);
   } catch (err) {
     console.log(err);
