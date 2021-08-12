@@ -1,5 +1,4 @@
 import { check, query } from "express-validator";
-import { max } from "moment";
 import {
   fullNameCheck,
   statusCheck,
@@ -18,11 +17,10 @@ const authorMessage =
   "First and last name must have at least 2 characters long";
 
 const statusMessage = "Please choose a valid status";
-
 const labelsMessage = "Please enter valid labels";
-
 const orderMessage = "Sorting by order is not defined";
 const methodMessage = "Sorting by method is not defined";
+
 export const createPullReqValidator = [
   check("title", titleMessage).trim().isString().isLength({ min: 2, max: 16 }),
   check("description", descriptionMessage)
@@ -36,6 +34,7 @@ export const createPullReqValidator = [
     .custom((fullName) => fullNameCheck(fullName)),
   check("status", statusMessage)
     .trim()
+    .toLowerCase()
     .custom((status) => statusCheck(status)),
   check("labels", labelsMessage).isArray(),
 ];
@@ -45,7 +44,9 @@ export const getPullReqValidator = [
     .trim()
     .toLowerCase()
     .custom((status) => statusCheck(status)),
-  query("labels", labelsMessage).custom((labels) => labelsCheck(labels)),
+  query("labels", labelsMessage)
+    .toLowerCase()
+    .custom((labels) => labelsCheck(labels)),
   query("sortingOrder", orderMessage).custom((order) => orderCheck(order)),
   query("sortingMethod", methodMessage)
     .toLowerCase()

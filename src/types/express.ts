@@ -26,4 +26,5 @@ export interface getReqQueryParams {
   labels: string;
   sortingOrder: order;
   sortingMethod: "title" | "creation";
+  page: number;
 }

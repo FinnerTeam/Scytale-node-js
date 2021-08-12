@@ -25,7 +25,6 @@
     "express": "^4.17.1",
     "express-validator": "^6.12.1",
     "helmet": "^4.6.0",
-    "moment": "^2.29.1",
     "mongoose": "^5.13.6",
     "typescript": "^4.3.5"
   },

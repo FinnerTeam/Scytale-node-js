@@ -1,6 +1,7 @@
 import { IPullRequest } from "../types/models";
 import { prStatus, order } from "../types/general";
-import mongoose, { Schema } from "mongoose";
+import { Schema, model } from "mongoose";
+import { PR_PER_PAGE } from "../controllers/pullReq";
 
 const PullRequestSchema: Schema = new Schema(
   {
@@ -17,7 +18,8 @@ export const getAll = async (
   prStatus: prStatus,
   label: string,
   sortingOrder: order,
-  sortingMethod: "title" | "_id"
+  sortingMethod: "title" | "_id",
+  page: number
 ): Promise<any[]> => {
   const findFields = {};
   const sortFields = {};
@@ -30,8 +32,10 @@ export const getAll = async (
   if (sortingMethod) {
     sortFields[sortingMethod] = sortingOrder;
   }
-
-  return await PullReq.find(findFields).sort(sortFields).limit(20);
+  return await PullReq.find(findFields)
+    .skip((page - 1) * PR_PER_PAGE)
+    .limit(PR_PER_PAGE)
+    .sort(sortFields);
 };
 
 export const getLabels = async () => {
@@ -46,7 +50,8 @@ export const getLabels = async () => {
   ]);
 };
 
-export const PullReq = mongoose.model<IPullRequest>(
-  "PullRequest",
-  PullRequestSchema
-);
+export const getPrsNumber = async () => {
+  return await PullReq.find().count();
+};
+
+export const PullReq = model<IPullRequest>("PullRequest", PullRequestSchema);

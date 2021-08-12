@@ -9,11 +9,8 @@ const MONGODB_URI = `mongodb+srv://${process.env.MONGO_USER}:${process.env.MONGO
 const app = express();
 
 app.use(express.json());
-
 app.use(cors());
-
 app.use(helmet());
-
 app.use("/prs", pullReqRoutes);
 
 mongoose

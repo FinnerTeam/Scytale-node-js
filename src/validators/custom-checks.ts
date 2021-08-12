@@ -1,4 +1,5 @@
 import { prStatus } from "../types/general";
+
 export const statusCheck = (status: prStatus) => {
   if (
     status !== "draft" &&
