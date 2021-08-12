@@ -16,10 +16,10 @@ const descriptionMessage =
 const authorMessage =
   "First and last name must have at least 2 characters long";
 
-const statusMessage = "Please choose a valid status";
-const labelsMessage = "Please enter valid labels";
-const orderMessage = "Sorting by order is not defined";
-const methodMessage = "Sorting by method is not defined";
+const statusMessage = "Please enter a valid status";
+const labelsMessage = "Please enter a valid labels";
+const orderMessage = "Sorting order is not defined";
+const methodMessage = "Sorting method is not defined";
 
 export const createPullReqValidator = [
   check("title", titleMessage).trim().isString().isLength({ min: 2, max: 16 }),

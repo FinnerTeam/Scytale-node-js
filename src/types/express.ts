@@ -1,5 +1,5 @@
 import { Response, Request, NextFunction } from "express";
-import { prStatus, order, sorting } from "./general";
+import { prStatus, order, sortingMethod } from "./general";
 export type res = Response;
 export type req = Request;
 export type next = NextFunction;
@@ -16,7 +16,7 @@ export interface createReqBody {
 export interface getReqBody {
   status: prStatus;
   labels: string[];
-  sorting: sorting;
+  sorting: sortingMethod;
 }
 
 //Query params
@@ -24,7 +24,7 @@ export interface getReqBody {
 export interface getReqQueryParams {
   prStatus: prStatus;
   labels: string;
-  sortingOrder: order;
-  sortingMethod: "title" | "creation";
+  sortingOrder: string;
+  sortingMethod: sortingMethod;
   page: number;
 }

@@ -1,6 +1,6 @@
 import { validationResult } from "express-validator";
 import { errorHandler } from "../helpers/errorHandler";
-import { PullReq, getAll, getLabels, getPrsNumber } from "../models/pullReq";
+import { PullReq, getAll, getLabels } from "../models/pullReq";
 import {
   res,
   req,
@@ -42,26 +42,17 @@ export const getPullRequests = async (req, res: res, next: next) => {
     if (!errors.isEmpty()) {
       throw errorHandler("Validation failed", 422, errors.array());
     }
-
-    let method: "_id" | "title";
-    if (sortingMethod == "creation") {
-      method = "_id";
-    } else {
-      method = sortingMethod;
-    }
-    const totalPrs = await getPrsNumber();
+    const pageNumber = +page || 1;
+    const order = parseInt(sortingOrder);
     const labelsResponse = await getLabels();
     const labelsArray = labelsResponse[0].allLabels;
-    const prsArray = await getAll(prStatus, labels, sortingOrder, method, page);
+    const prs = await getAll(prStatus, labels, order, sortingMethod, page);
     res.status(200).send({
-      prs: prsArray,
+      prs: prs[0]?.data || [],
       labels: labelsArray,
-      totalPrs,
-      hasNextPage: PR_PER_PAGE * page < totalPrs,
-      hasPreviousPage: page > 1,
-      nextPage: page + 1,
-      prevPage: page - 1,
-      lastPage: Math.ceil(totalPrs / PR_PER_PAGE),
+      currentPage: pageNumber,
+      hasNextPage: PR_PER_PAGE * pageNumber < prs[0]?.count,
+      hasPreviousPage: pageNumber > 1,
     });
   } catch (err) {
     next(err);

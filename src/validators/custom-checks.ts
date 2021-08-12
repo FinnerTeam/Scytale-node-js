@@ -38,13 +38,14 @@ export const fullNameCheck = (fullName: string) => {
 };
 
 export const sortingMethodCheck = (query: "title" | "creation") => {
-  if (query !== "title" && query !== "creation") {
+  if (query !== "title" && query !== "creation" && query !== "all") {
     return Promise.reject();
   }
   return Promise.resolve();
 };
 
 export const orderCheck = (order: "1" | "-1") => {
+  console.log(order);
   if (order !== "1" && order !== "-1") {
     return Promise.reject();
   }

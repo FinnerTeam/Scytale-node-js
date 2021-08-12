@@ -1,5 +1,5 @@
 import { IPullRequest } from "../types/models";
-import { prStatus, order } from "../types/general";
+import { prStatus, order, sortingMethod } from "../types/general";
 import { Schema, model } from "mongoose";
 import { PR_PER_PAGE } from "../controllers/pullReq";
 
@@ -17,8 +17,8 @@ const PullRequestSchema: Schema = new Schema(
 export const getAll = async (
   prStatus: prStatus,
   label: string,
-  sortingOrder: order,
-  sortingMethod: "title" | "_id",
+  sortingOrder: number,
+  sortingMethod: sortingMethod,
   page: number
 ): Promise<any[]> => {
   const findFields = {};
@@ -32,10 +32,27 @@ export const getAll = async (
   if (sortingMethod) {
     sortFields[sortingMethod] = sortingOrder;
   }
-  return await PullReq.find(findFields)
-    .skip((page - 1) * PR_PER_PAGE)
-    .limit(PR_PER_PAGE)
-    .sort(sortFields);
+  return await PullReq.aggregate([
+    { $sort: sortFields },
+
+    { $match: findFields },
+
+    {
+      $facet: {
+        stage1: [{ $group: { _id: null, count: { $sum: 1 } } }],
+
+        stage2: [{ $skip: (page - 1) * PR_PER_PAGE }, { $limit: PR_PER_PAGE }],
+      },
+    },
+
+    { $unwind: "$stage1" },
+    {
+      $project: {
+        count: "$stage1.count",
+        data: "$stage2",
+      },
+    },
+  ]);
 };
 
 export const getLabels = async () => {
