@@ -9,7 +9,7 @@ import {
   getReqQueryParams,
 } from "../types/express";
 
-export const PR_PER_PAGE = 5;
+export const PR_PER_PAGE = 3;
 
 export const createPullRequest = async (req: req, res: res, next: next) => {
   const { title, description, author, status, labels } =

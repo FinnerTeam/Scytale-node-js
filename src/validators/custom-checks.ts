@@ -45,7 +45,6 @@ export const sortingMethodCheck = (query: "title" | "creation") => {
 };
 
 export const orderCheck = (order: "1" | "-1") => {
-  console.log(order);
   if (order !== "1" && order !== "-1") {
     return Promise.reject();
   }
