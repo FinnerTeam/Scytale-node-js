@@ -3,7 +3,6 @@ import cors from "cors";
 import mongoose from "mongoose";
 import helmet from "helmet";
 import pullReqRoutes from "./routes/pullReq";
-
 const MONGODB_URI = `mongodb+srv://${process.env.MONGO_USER}:${process.env.MONGO_PASSWORD}@clear-cluster.2zd4u.mongodb.net/${process.env.MONGO_DEFAULT_DATABASE}?retryWrites=true&w=majority`;
 
 const app = express();

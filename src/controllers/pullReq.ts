@@ -1,6 +1,6 @@
 import { validationResult } from "express-validator";
 import { errorHandler } from "../helpers/errorHandler";
-import { PullReq, getAll } from "../models/pullReq";
+import { PullReq, getAll, getLabels } from "../models/pullReq";
 import {
   res,
   req,
@@ -8,7 +8,6 @@ import {
   createReqBody,
   getReqQueryParams,
 } from "../types/express";
-
 export const createPullRequest = async (req: req, res: res, next: next) => {
   const { title, description, author, status, labels } =
     req.body as createReqBody;
@@ -40,14 +39,17 @@ export const getPullRequests = async (req, res: res, next: next) => {
     if (!errors.isEmpty()) {
       throw errorHandler("Validation failed", 422, errors.array());
     }
-    const labelsArray = labels.substring(2).split(",");
-    const response = await getAll(
-      prStatus,
-      labelsArray,
-      sortingOrder,
-      sortingMethod
-    );
-    res.status(200).send(response);
+    const labelsData = labels.substring(2).split(",");
+    let method: "_id" | "title";
+    if (sortingMethod == "creation") {
+      method = "_id";
+    } else {
+      method = sortingMethod;
+    }
+    const labelsResponse = await getLabels();
+    const labelsArray = labelsResponse[0].allLabels;
+    const prsArray = await getAll(prStatus, labelsData, sortingOrder, method);
+    res.status(200).send({ prs: prsArray, labels: labelsArray });
   } catch (err) {
     console.log(err);
     next(err);

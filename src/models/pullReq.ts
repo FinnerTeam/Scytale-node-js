@@ -17,7 +17,7 @@ export const getAll = async (
   prStatus: prStatus,
   labelsArray: string[],
   sortingOrder: order,
-  sortingMethod: "title" | "creation"
+  sortingMethod: "title" | "_id"
 ): Promise<any[]> => {
   const findFields = {};
   const sortFields = {};
@@ -30,7 +30,20 @@ export const getAll = async (
   if (sortingMethod) {
     sortFields[sortingMethod] = sortingOrder;
   }
+
   return await PullReq.find(findFields).sort(sortFields).limit(20);
+};
+
+export const getLabels = async () => {
+  return await PullReq.aggregate([
+    { $unwind: "$labels" },
+    {
+      $group: {
+        _id: {},
+        allLabels: { $addToSet: "$labels" },
+      },
+    },
+  ]);
 };
 
 export const PullReq = mongoose.model<IPullRequest>(
